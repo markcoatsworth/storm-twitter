@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+  <classpathentry kind="src" path="test/jvm" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/jvm" including="**/*.java"/>
+  <classpathentry kind="src" path="multilang" excluding="**/*.java"/>
+  <classpathentry kind="src" path="target/maven-shared-archive-resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/testng/testng/6.8.5/testng-6.8.5.jar" sourcepath="M2_REPO/org/testng/testng/6.8.5/testng-6.8.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/testng/testng/6.8.5/testng-6.8.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/beust/jcommander/1.27/jcommander-1.27.jar" sourcepath="M2_REPO/com/beust/jcommander/1.27/jcommander-1.27-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/beust/jcommander/1.27/jcommander-1.27-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/yaml/snakeyaml/1.11/snakeyaml-1.11.jar" sourcepath="M2_REPO/org/yaml/snakeyaml/1.11/snakeyaml-1.11-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/yaml/snakeyaml/1.11/snakeyaml-1.11-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5.jar" sourcepath="M2_REPO/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/easytesting/fest-assert-core/2.0M8/fest-assert-core-2.0M8.jar" sourcepath="M2_REPO/org/easytesting/fest-assert-core/2.0M8/fest-assert-core-2.0M8-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/easytesting/fest-assert-core/2.0M8/fest-assert-core-2.0M8-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/easytesting/fest-util/1.2.3/fest-util-1.2.3.jar" sourcepath="M2_REPO/org/easytesting/fest-util/1.2.3/fest-util-1.2.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/easytesting/fest-util/1.2.3/fest-util-1.2.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/jmock/jmock/2.6.0/jmock-2.6.0.jar" sourcepath="M2_REPO/org/jmock/jmock/2.6.0/jmock-2.6.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/jmock/jmock/2.6.0/jmock-2.6.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/storm/storm-core/0.9.5/storm-core-0.9.5.jar" sourcepath="M2_REPO/org/apache/storm/storm-core/0.9.5/storm-core-0.9.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/apache/storm/storm-core/0.9.5/storm-core-0.9.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/clojure/1.5.1/clojure-1.5.1.jar" sourcepath="M2_REPO/org/clojure/clojure/1.5.1/clojure-1.5.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/clojure/clojure/1.5.1/clojure-1.5.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/clj-time/clj-time/0.4.1/clj-time-0.4.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/joda-time/joda-time/2.0/joda-time-2.0.jar" sourcepath="M2_REPO/joda-time/joda-time/2.0/joda-time-2.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/joda-time/joda-time/2.0/joda-time-2.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/compojure/compojure/1.1.3/compojure-1.1.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/core.incubator/0.1.0/core.incubator-0.1.0.jar" sourcepath="M2_REPO/org/clojure/core.incubator/0.1.0/core.incubator-0.1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.macro/0.1.0/tools.macro-0.1.0.jar" sourcepath="M2_REPO/org/clojure/tools.macro/0.1.0/tools.macro-0.1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clout/clout/1.0.1/clout-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-core/1.1.5/ring-core-1.1.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.6/commons-codec-1.6-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-codec/commons-codec/1.6/commons-codec-1.6-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar" sourcepath="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1.jar" sourcepath="M2_REPO/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/hiccup/hiccup/0.3.6/hiccup-0.3.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-devel/0.3.11/ring-devel-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clj-stacktrace/clj-stacktrace/0.2.2/clj-stacktrace-0.2.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-jetty-adapter/0.3.11/ring-jetty-adapter-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ring/ring-servlet/0.3.11/ring-servlet-0.3.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.logging/0.2.3/tools.logging-0.2.3.jar" sourcepath="M2_REPO/org/clojure/tools.logging/0.2.3/tools.logging-0.2.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/math.numeric-tower/0.0.1/math.numeric-tower-0.0.1.jar" sourcepath="M2_REPO/org/clojure/math.numeric-tower/0.0.1/math.numeric-tower-0.0.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.cli/0.2.4/tools.cli-0.2.4.jar" sourcepath="M2_REPO/org/clojure/tools.cli/0.2.4/tools.cli-0.2.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-exec/1.1/commons-exec-1.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/apache/commons/commons-exec/1.1/commons-exec-1.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-lang/commons-lang/2.5/commons-lang-2.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar" sourcepath="M2_REPO/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/twitter/carbonite/1.4.0/carbonite-1.4.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar" sourcepath="M2_REPO/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/reflectasm/reflectasm/1.07/reflectasm-1.07-shaded.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/ow2/asm/asm/4.0/asm-4.0.jar" sourcepath="M2_REPO/org/ow2/asm/asm/4.0/asm-4.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/ow2/asm/asm/4.0/asm-4.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2.jar" sourcepath="M2_REPO/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/esotericsoftware/minlog/minlog/1.2/minlog-1.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/objenesis/objenesis/1.2/objenesis-1.2.jar" sourcepath="M2_REPO/org/objenesis/objenesis/1.2/objenesis-1.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/objenesis/objenesis/1.2/objenesis-1.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/twitter/chill-java/0.3.5/chill-java-0.3.5.jar" sourcepath="M2_REPO/com/twitter/chill-java/0.3.5/chill-java-0.3.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/twitter/chill-java/0.3.5/chill-java-0.3.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/googlecode/disruptor/disruptor/2.10.1/disruptor-2.10.1.jar" sourcepath="M2_REPO/com/googlecode/disruptor/disruptor/2.10.1/disruptor-2.10.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/googlecode/disruptor/disruptor/2.10.1/disruptor-2.10.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/jgrapht/jgrapht-core/0.9.0/jgrapht-core-0.9.0.jar" sourcepath="M2_REPO/org/jgrapht/jgrapht-core/0.9.0/jgrapht-core-0.9.0-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/jgrapht/jgrapht-core/0.9.0/jgrapht-core-0.9.0-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-classic/1.0.13/logback-classic-1.0.13.jar" sourcepath="M2_REPO/ch/qos/logback/logback-classic/1.0.13/logback-classic-1.0.13-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/ch/qos/logback/logback-classic/1.0.13/logback-classic-1.0.13-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/ch/qos/logback/logback-core/1.0.13/logback-core-1.0.13.jar" sourcepath="M2_REPO/ch/qos/logback/logback-core/1.0.13/logback-core-1.0.13-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/ch/qos/logback/logback-core/1.0.13/logback-core-1.0.13-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6.jar" sourcepath="M2_REPO/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/jline/jline/2.11/jline-2.11.jar" sourcepath="M2_REPO/jline/jline/2.11/jline-2.11-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/jline/jline/2.11/jline-2.11-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/16.0.1/guava-16.0.1.jar" sourcepath="M2_REPO/com/google/guava/guava/16.0.1/guava-16.0.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/google/guava/guava/16.0.1/guava-16.0.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/reply/reply/0.3.0/reply-0.3.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/thnetos/cd-client/0.3.6/cd-client-0.3.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clj-http-lite/clj-http-lite/0.2.0/clj-http-lite-0.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/slingshot/slingshot/0.10.3/slingshot-0.10.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/cheshire/cheshire/4.0.3/cheshire-4.0.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.0.6/jackson-core-2.0.6.jar" sourcepath="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.0.6/jackson-core-2.0.6-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.0.6/jackson-core-2.0.6-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/dataformat/jackson-dataformat-smile/2.0.6/jackson-dataformat-smile-2.0.6.jar" sourcepath="M2_REPO/com/fasterxml/jackson/dataformat/jackson-dataformat-smile/2.0.6/jackson-dataformat-smile-2.0.6-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-smile/2.0.6/jackson-dataformat-smile-2.0.6-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/clojure/tools.nrepl/0.2.3/tools.nrepl-0.2.3.jar" sourcepath="M2_REPO/org/clojure/tools.nrepl/0.2.3/tools.nrepl-0.2.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/clojure/tools.nrepl/0.2.3/tools.nrepl-0.2.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/cemerick/drawbridge/0.0.6/drawbridge-0.0.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clj-http/clj-http/0.3.6/clj-http-0.3.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/trptcolin/versioneer/0.1.0/versioneer-0.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/clojure-complete/clojure-complete/0.2.3/clojure-complete-0.2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/clojars/trptcolin/sjacket/0.1.0.3/sjacket-0.1.0.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/cgrand/regex/1.1.0/regex-1.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/cgrand/parsley/0.9.1/parsley-0.9.1.jar"/>
+</classpath>
