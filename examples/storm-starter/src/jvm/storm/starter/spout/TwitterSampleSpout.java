@@ -21,6 +21,9 @@ package storm.starter.spout;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -51,6 +54,8 @@ public class TwitterSampleSpout extends BaseRichSpout {
 	String accessToken;
 	String accessTokenSecret;
 	String[] keyWords;
+	
+	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
 
 	public TwitterSampleSpout(String consumerKey, String consumerSecret,
 			String accessToken, String accessTokenSecret, String[] keyWords) {
@@ -112,13 +117,14 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		AccessToken token = new AccessToken(accessToken, accessTokenSecret);
 		twitterStream.setOAuthAccessToken(token);
 		
+		log.info("Checking keywords length...");
 		if (keyWords.length == 0) {
 
 			twitterStream.sample();
 		}
 
 		else {
-
+			log.info("Tracking the following keywords: " + keyWords[0] + ", " + keyWords[1]);
 			FilterQuery query = new FilterQuery().track(keyWords);
 			twitterStream.filter(query);
 		}

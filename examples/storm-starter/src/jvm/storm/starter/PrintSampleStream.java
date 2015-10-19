@@ -25,10 +25,16 @@ import backtype.storm.LocalCluster;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.utils.Utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import storm.starter.bolt.PrinterBolt;
 import storm.starter.spout.TwitterSampleSpout;
 
-public class PrintSampleStream {        
+public class PrintSampleStream {    
+	
+	protected static Logger log = LoggerFactory.getLogger("PrintSampleStream");
+	
     public static void main(String[] args) {
         String consumerKey = args[0]; 
         String consumerSecret = args[1]; 
@@ -39,6 +45,7 @@ public class PrintSampleStream {
         
         TopologyBuilder builder = new TopologyBuilder();
         
+        log.info("Setting spout with keywords: " + keyWords.toString());
         builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret,
                                 accessToken, accessTokenSecret, keyWords));
         builder.setBolt("print", new PrinterBolt())
