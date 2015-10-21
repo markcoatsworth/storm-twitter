@@ -19,10 +19,13 @@
 package storm.starter;
 
 import java.util.Arrays;
+import java.util.List;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
+import backtype.storm.generated.TopologySummary;
 import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.utils.NimbusClient;
 import backtype.storm.utils.Utils;
 
 import org.slf4j.Logger;
@@ -43,23 +46,41 @@ public class PrintSampleStream {
         String[] arguments = args.clone();
         String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
         
+        // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        
-        log.info("Setting spout with keywords: " + keyWords.toString());
-        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret,
-                                accessToken, accessTokenSecret, keyWords));
-        builder.setBolt("print", new PrinterBolt())
-                .shuffleGrouping("twitter");
+        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
+        builder.setBolt("print", new PrinterBolt()).shuffleGrouping("twitter");
                 
-                
+        // Send the topology to the compute cluster        
         Config conf = new Config();
-        
-        
         LocalCluster cluster = new LocalCluster();
-        
         cluster.submitTopology("test", conf, builder.createTopology());
+
+        /*
+        for(int i = 0; i < 10; i++) {
+        	Utils.sleep(1000);
+        	log.info("Topology spouts size: " + cluster.getTopology("test").get_spouts_size());
+        	log.info("Topology bolts size: " + cluster.getTopology("test").get_bolts_size());
+        	log.info("Twitter Spout: " + cluster.getTopology("test").get_spouts().get("twitter").toString());
+        }
         
-        Utils.sleep(10000);
         cluster.shutdown();
+        */
+        
+        try {
+        	// Wait for 10 seconds then shut down the Twitter stream
+	        Utils.sleep(10000);
+	        
+	        log.info("Trying to read topology data...");
+	        //NimbusClient nimbusClient = NimbusClient.getConfiguredClient(Utils.readDefaultConfig());
+	        //List<TopologySummary> topologies = nimbusClient.getClient().getClusterInfo().get_topologies();
+        	log.info("Topology spouts size: " + cluster.getTopology("test").get_spouts());
+	        
+	        cluster.shutdown();
+        }
+        catch(Exception ex) {
+        	System.out.println("Failed to read topology data.");
+        	ex.printStackTrace();
+        }
     }
 }

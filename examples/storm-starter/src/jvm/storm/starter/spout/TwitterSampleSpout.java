@@ -18,6 +18,7 @@
 
 package storm.starter.spout;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -46,6 +47,7 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class TwitterSampleSpout extends BaseRichSpout {
 
+	int TweetsCollected;
 	SpoutOutputCollector _collector;
 	LinkedBlockingQueue<Status> queue = null;
 	TwitterStream _twitterStream;
@@ -64,6 +66,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		this.accessToken = accessToken;
 		this.accessTokenSecret = accessTokenSecret;
 		this.keyWords = keyWords;
+		this.TweetsCollected = 0;
 	}
 
 	public TwitterSampleSpout() {
@@ -79,7 +82,6 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 			@Override
 			public void onStatus(Status status) {
-				log.info("listener.onStatus() called, status=" + status.getText());
 				queue.offer(status);
 			}
 
@@ -115,6 +117,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		twitterStream.setOAuthConsumer(consumerKey, consumerSecret);
 		AccessToken token = new AccessToken(accessToken, accessTokenSecret);
 		twitterStream.setOAuthAccessToken(token);
+		_twitterStream = twitterStream;
 		
 		if (keyWords.length == 0) {
 
@@ -122,7 +125,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		}
 
 		else {
-			log.info("Tracking the following keywords: " + keyWords[0] + ", " + keyWords[1]);
+			// TODO: Adjust the query below to also track locations and languages.
 			FilterQuery query = new FilterQuery().track(keyWords);
 			twitterStream.filter(query);
 		}
@@ -131,12 +134,14 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 	@Override
 	public void nextTuple() {
-		log.info("nextTuple() called");
+		log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
 		Status ret = queue.poll();
 		if (ret == null) {
 			Utils.sleep(50);
 		} else {
+			log.info("Got new status: " + ret.getText());
 			_collector.emit(new Values(ret));
+			this.TweetsCollected++;
 
 		}
 	}
