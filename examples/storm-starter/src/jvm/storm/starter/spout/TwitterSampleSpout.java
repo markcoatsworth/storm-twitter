@@ -71,8 +71,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 	}
 
 	@Override
-	public void open(Map conf, TopologyContext context,
-			SpoutOutputCollector collector) {
+	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
 		queue = new LinkedBlockingQueue<Status>(1000);
 		_collector = collector;
 
@@ -80,7 +79,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 			@Override
 			public void onStatus(Status status) {
-			
+				log.info("listener.onStatus() called, status=" + status.getText());
 				queue.offer(status);
 			}
 
@@ -117,7 +116,6 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		AccessToken token = new AccessToken(accessToken, accessTokenSecret);
 		twitterStream.setOAuthAccessToken(token);
 		
-		log.info("Checking keywords length...");
 		if (keyWords.length == 0) {
 
 			twitterStream.sample();
@@ -133,6 +131,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 	@Override
 	public void nextTuple() {
+		log.info("nextTuple() called");
 		Status ret = queue.poll();
 		if (ret == null) {
 			Utils.sleep(50);
@@ -144,6 +143,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 	@Override
 	public void close() {
+		log.info("Closing Twitter stream...");
 		_twitterStream.shutdown();
 	}
 
