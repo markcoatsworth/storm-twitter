@@ -18,6 +18,10 @@
 
 package storm.starter.spout;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -48,25 +52,25 @@ import backtype.storm.utils.Utils;
 public class TwitterSampleSpout extends BaseRichSpout {
 
 	int TweetsCollected;
-	SpoutOutputCollector _collector;
 	LinkedBlockingQueue<Status> queue = null;
-	TwitterStream _twitterStream;
+	SpoutOutputCollector _collector;
 	String consumerKey;
 	String consumerSecret;
 	String accessToken;
 	String accessTokenSecret;
 	String[] keyWords;
+	TwitterStream _twitterStream;
 	
 	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
 
-	public TwitterSampleSpout(String consumerKey, String consumerSecret,
-			String accessToken, String accessTokenSecret, String[] keyWords) {
+	public TwitterSampleSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
 		this.accessToken = accessToken;
 		this.accessTokenSecret = accessTokenSecret;
 		this.keyWords = keyWords;
 		this.TweetsCollected = 0;
+		
 	}
 
 	public TwitterSampleSpout() {
@@ -119,6 +123,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		twitterStream.setOAuthAccessToken(token);
 		_twitterStream = twitterStream;
 		
+		
 		if (keyWords.length == 0) {
 
 			twitterStream.sample();
@@ -127,7 +132,9 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		else {
 			// TODO: Adjust the query below to also track locations and languages.
 			FilterQuery query = new FilterQuery().track(keyWords);
+		
 			twitterStream.filter(query);
+			
 		}
 
 	}
@@ -139,10 +146,16 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		if (ret == null) {
 			Utils.sleep(50);
 		} else {
-			log.info("Got new status: " + ret.getText());
-			_collector.emit(new Values(ret));
-			this.TweetsCollected++;
-
+			try {
+				BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter("storm-twitter-results.txt", true));
+				//ResultsFileWriter.append(ret.toString());
+				ResultsFileWriter.append(ret.getText().replaceAll("(\\r|\\n)", "") + "\n");
+				ResultsFileWriter.close();
+				this.TweetsCollected++;
+			}
+			catch(Exception ex) {
+				log.error("Could not write result: " + ex.getMessage());
+			}			
 		}
 	}
 

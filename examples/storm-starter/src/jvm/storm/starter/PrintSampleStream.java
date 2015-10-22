@@ -55,7 +55,7 @@ public class PrintSampleStream {
         Config conf = new Config();
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("test", conf, builder.createTopology());
-
+        
         /*
         for(int i = 0; i < 10; i++) {
         	Utils.sleep(1000);
@@ -69,17 +69,27 @@ public class PrintSampleStream {
         
         try {
         	// Wait for 10 seconds then shut down the Twitter stream
-	        Utils.sleep(10000);
+	        Utils.sleep(100000);
 	        
 	        log.info("Trying to read topology data...");
-	        //NimbusClient nimbusClient = NimbusClient.getConfiguredClient(Utils.readDefaultConfig());
-	        //List<TopologySummary> topologies = nimbusClient.getClient().getClusterInfo().get_topologies();
-        	log.info("Topology spouts size: " + cluster.getTopology("test").get_spouts());
+	        
+	        /*
+	        List<TopologySummary> topologies = cluster.getClusterInfo().get_topologies();
+	        log.info("Topology name: " + topologies.get(0).get_name());
+	        log.info("Topology status: " + topologies.get(0).get_status());
+	        log.info("Topology id: " + topologies.get(0).get_id());
+	        log.info("Topology num executors: " + topologies.get(0).get_num_executors());
+	        
+	        log.info("Topology spouts size: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts_size());
+	        log.info("Topology twitter spout: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").toString());
+	        log.info("Topology twitter toString: " + new String(cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").get_spout_object().toString()));
+	        log.info("Topology twitter isSet field 0: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").get_spout_object().
+	        */
 	        
 	        cluster.shutdown();
         }
         catch(Exception ex) {
-        	System.out.println("Failed to read topology data.");
+        	log.error("Failed to read topology data.");
         	ex.printStackTrace();
         }
     }
