@@ -20,9 +20,6 @@ package storm.starter.spout;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -131,9 +128,12 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 		else {
 			// TODO: Adjust the query below to also track locations and languages.
-			FilterQuery query = new FilterQuery().track(keyWords);
-		
+			FilterQuery query = new FilterQuery();
+			query.track(keyWords);
+			
+			
 			twitterStream.filter(query);
+			
 			
 		}
 
@@ -147,14 +147,23 @@ public class TwitterSampleSpout extends BaseRichSpout {
 			Utils.sleep(50);
 		} else {
 			try {
+				
+				// Retweet status text gets truncated. In this case, just reference the original tweet.
+				if(ret.isRetweet()) {
+					ret = ret.getRetweetedStatus();
+				}
+				
+				// Output the status text to file (and to the screen)
 				BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter("storm-twitter-results.txt", true));
-				//ResultsFileWriter.append(ret.toString());
-				ResultsFileWriter.append(ret.getText().replaceAll("(\\r|\\n)", "") + "\n");
+				String tweetText = ret.getText().replaceAll("(\\r|\\n)", "");
+				log.info(tweetText);
+				ResultsFileWriter.append(tweetText + "\n");
 				ResultsFileWriter.close();
 				this.TweetsCollected++;
 			}
 			catch(Exception ex) {
 				log.error("Could not write result: " + ex.getMessage());
+				ex.printStackTrace();
 			}			
 		}
 	}

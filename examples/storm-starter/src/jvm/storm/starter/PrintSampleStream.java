@@ -69,7 +69,7 @@ public class PrintSampleStream {
         
         try {
         	// Wait for 10 seconds then shut down the Twitter stream
-	        Utils.sleep(100000);
+	        Utils.sleep(10000);
 	        
 	        log.info("Trying to read topology data...");
 	        
