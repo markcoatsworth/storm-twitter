@@ -56,36 +56,12 @@ public class PrintSampleStream {
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("test", conf, builder.createTopology());
         
-        /*
-        for(int i = 0; i < 10; i++) {
-        	Utils.sleep(1000);
-        	log.info("Topology spouts size: " + cluster.getTopology("test").get_spouts_size());
-        	log.info("Topology bolts size: " + cluster.getTopology("test").get_bolts_size());
-        	log.info("Twitter Spout: " + cluster.getTopology("test").get_spouts().get("twitter").toString());
-        }
-        
-        cluster.shutdown();
-        */
         
         try {
-        	// Wait for 10 seconds then shut down the Twitter stream
+        	// Wait for the topology to do some work
 	        Utils.sleep(10000);
 	        
-	        log.info("Trying to read topology data...");
-	        
-	        /*
-	        List<TopologySummary> topologies = cluster.getClusterInfo().get_topologies();
-	        log.info("Topology name: " + topologies.get(0).get_name());
-	        log.info("Topology status: " + topologies.get(0).get_status());
-	        log.info("Topology id: " + topologies.get(0).get_id());
-	        log.info("Topology num executors: " + topologies.get(0).get_num_executors());
-	        
-	        log.info("Topology spouts size: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts_size());
-	        log.info("Topology twitter spout: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").toString());
-	        log.info("Topology twitter toString: " + new String(cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").get_spout_object().toString()));
-	        log.info("Topology twitter isSet field 0: " + cluster.getTopology(topologies.get(0).get_id()).get_spouts().get("twitter").get_spout_object().
-	        */
-	        
+	        // Now shut it down!
 	        cluster.shutdown();
         }
         catch(Exception ex) {

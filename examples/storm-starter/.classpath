@@ -46,14 +46,14 @@
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-stream/3.0.6/twitter4j-stream-3.0.6.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-stream/3.0.6/twitter4j-stream-3.0.6-sources.jar">
     <attributes>
-      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-stream/3.0.3/twitter4j-stream-3.0.3-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-stream/3.0.6/twitter4j-stream-3.0.6-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/twitter4j/twitter4j-core/3.0.6/twitter4j-core-3.0.6.jar" sourcepath="M2_REPO/org/twitter4j/twitter4j-core/3.0.6/twitter4j-core-3.0.6-sources.jar">
     <attributes>
-      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-core/3.0.3/twitter4j-core-3.0.3-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/home/mark/.m2/repository/org/twitter4j/twitter4j-core/3.0.6/twitter4j-core-3.0.6-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/apache/storm/storm-core/0.9.5/storm-core-0.9.5.jar" sourcepath="M2_REPO/org/apache/storm/storm-core/0.9.5/storm-core-0.9.5-sources.jar">

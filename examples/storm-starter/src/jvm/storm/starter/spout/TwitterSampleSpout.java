@@ -130,7 +130,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 			// TODO: Adjust the query below to also track locations and languages.
 			FilterQuery query = new FilterQuery();
 			query.track(keyWords);
-			
+			query.language(new String[]{"en"});
 			
 			twitterStream.filter(query);
 			
