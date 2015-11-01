@@ -31,12 +31,12 @@ import backtype.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import storm.starter.bolt.PrinterBolt;
+import storm.starter.bolt.*;
 import storm.starter.spout.*;
 
-public class PrintSampleStream {    
+public class A3Q2Stream {    
 	
-	protected static Logger log = LoggerFactory.getLogger("PrintSampleStream");
+	protected static Logger log = LoggerFactory.getLogger("TwitterHashtagContinentStream");
 	
     public static void main(String[] args) {
         String consumerKey = args[0]; 
@@ -46,10 +46,16 @@ public class PrintSampleStream {
         String[] arguments = args.clone();
         String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
         
+        String[] hashTags = new String[]{ "#Mets", "#Royals", "#WorldSeries" };
+        
         // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitter", new TwitterKeywordsFileOutputSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
-        builder.setBolt("print", new PrinterBolt()).shuffleGrouping("twitter");
+        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
+        builder.setSpout("hashtags", new HashtagSpout(hashTags));
+        
+        builder.setBolt("print", new A3Q2Bolt())
+        	.shuffleGrouping("twitter")
+        	.shuffleGrouping("hashtags");
                 
         // Send the topology to the compute cluster        
         Config conf = new Config();
@@ -58,8 +64,8 @@ public class PrintSampleStream {
         
         
         try {
-        	// Wait for the topology to do some work
-	        Utils.sleep(7200000);
+        	// Sleep for a long time
+	        Utils.sleep(3600000);
 	        
 	        // Now shut it down!
 	        cluster.shutdown();

@@ -21,6 +21,7 @@ package storm.starter.spout;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
@@ -46,124 +47,73 @@ import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
 @SuppressWarnings("serial")
-public class TwitterSampleSpout extends BaseRichSpout {
+public class HashtagSpout extends BaseRichSpout {
 
-	int TweetsCollected;
-	LinkedBlockingQueue<Status> queue = null;
+	int hashTagsPerInterval = 3;
+	int intervalLengthSecs = 3;
+	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
-	String consumerKey;
-	String consumerSecret;
-	String accessToken;
-	String accessTokenSecret;
-	String[] keyWords;
+	String[] hashTags;
 	TwitterStream _twitterStream;
 	
-	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
+	protected static Logger log = LoggerFactory.getLogger("TwitterHashtagSpout");
 
-	public TwitterSampleSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
-		this.consumerKey = consumerKey;
-		this.consumerSecret = consumerSecret;
-		this.accessToken = accessToken;
-		this.accessTokenSecret = accessTokenSecret;
-		this.keyWords = keyWords;
-		this.TweetsCollected = 0;
-		
+	public HashtagSpout(String[] hashTags) {
+		this.hashTags = hashTags;
 	}
 
-	public TwitterSampleSpout() {
+	public HashtagSpout() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
-		queue = new LinkedBlockingQueue<Status>(1000);
+		log.info("Called open...");
+		
+		Random randomGenerator = new Random();
+		queue = new LinkedBlockingQueue<String>(1000);
 		_collector = collector;
-
-		StatusListener listener = new StatusListener() {
-
-			@Override
-			public void onStatus(Status status) {
-				queue.offer(status);
-			}
-
-			@Override
-			public void onDeletionNotice(StatusDeletionNotice sdn) {
-			}
-
-			@Override
-			public void onTrackLimitationNotice(int i) {
-			}
-
-			@Override
-			public void onScrubGeo(long l, long l1) {
-			}
-
-			@Override
-			public void onException(Exception ex) {
-			}
-
-			@Override
-			public void onStallWarning(StallWarning arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-		};
-
-		TwitterStream twitterStream = new TwitterStreamFactory(
-				new ConfigurationBuilder().setJSONStoreEnabled(true).build())
-				.getInstance();
-
-		twitterStream.addListener(listener);
-		twitterStream.setOAuthConsumer(consumerKey, consumerSecret);
-		AccessToken token = new AccessToken(accessToken, accessTokenSecret);
-		twitterStream.setOAuthAccessToken(token);
-		_twitterStream = twitterStream;
 		
-		
-		if (keyWords.length == 0) {
-
-			twitterStream.sample();
-		}
-
-		else {
-			// TODO: Adjust the query below to also track locations and languages.
-			FilterQuery query = new FilterQuery();
-			query.track(keyWords);
-			query.language(new String[]{"en"});
+		// Every time interval, send a random hashtag to the bolt. 
+		while(true) {
 			
-			twitterStream.filter(query);
+			int randIndex = randomGenerator.nextInt(hashTags.length);
+			queue.offer(hashTags[randIndex]);
 			
+			// Send to the collector
+			_collector.emit(new Values(queue.poll()));
 			
-		}
-
+			// Wait...
+			Utils.sleep(intervalLengthSecs * 1000);
+		}		
 	}
 
 	@Override
 	public void nextTuple() {
-		//log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
-		Utils.sleep(50);
 		
-		Status ret = queue.poll();
+		log.info("nextTuple called!");
 		
-		while(ret != null) {
+		/*Utils.sleep(5000);
+		
+		String hashtag = queue.poll();
+		if (hashtag == null) {
+			Utils.sleep(1000);
+		} 
+		else {
 			try {
-				_collector.emit(new Values(ret));
-				//log.info("Got new tweet (" + ret.getText() + ")! collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
-				this.TweetsCollected++;	
+				log.info("Got something! Emitting to collector...");
+				_collector.emit(new Values(hashtag));
 			}
 			catch(Exception ex) {
 				log.error("Could not write result: " + ex.getMessage());
 				ex.printStackTrace();
-			}
-			ret = queue.poll();
+			}			
 		}
+		*/
 	}
 
 	@Override
 	public void close() {
-		log.info("Closing Twitter stream...");
-		_twitterStream.shutdown();
 	}
 
 	@Override

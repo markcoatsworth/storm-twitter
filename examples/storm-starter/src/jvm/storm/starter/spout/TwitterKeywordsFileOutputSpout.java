@@ -46,7 +46,7 @@ import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
 @SuppressWarnings("serial")
-public class TwitterSampleSpout extends BaseRichSpout {
+public class TwitterKeywordsFileOutputSpout extends BaseRichSpout {
 
 	int TweetsCollected;
 	LinkedBlockingQueue<Status> queue = null;
@@ -60,7 +60,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 	
 	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
 
-	public TwitterSampleSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
+	public TwitterKeywordsFileOutputSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
 		this.accessToken = accessToken;
@@ -70,7 +70,7 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		
 	}
 
-	public TwitterSampleSpout() {
+	public TwitterKeywordsFileOutputSpout() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -141,22 +141,30 @@ public class TwitterSampleSpout extends BaseRichSpout {
 
 	@Override
 	public void nextTuple() {
-		//log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
-		Utils.sleep(50);
-		
+		log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
 		Status ret = queue.poll();
-		
-		while(ret != null) {
+		if (ret == null) {
+			Utils.sleep(50);
+		} else {
 			try {
-				_collector.emit(new Values(ret));
-				//log.info("Got new tweet (" + ret.getText() + ")! collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
-				this.TweetsCollected++;	
+				
+				// Retweet status text gets truncated. In this case, just reference the original tweet.
+				if(ret.isRetweet()) {
+					ret = ret.getRetweetedStatus();
+				}
+				
+				// Output the status text to file (and to the screen)
+				BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter("storm-twitter-results.txt", true));
+				String tweetText = ret.getText().replaceAll("(\\r|\\n)", "");
+				log.info(tweetText);
+				ResultsFileWriter.append(tweetText + "\n");
+				ResultsFileWriter.close();
+				this.TweetsCollected++;
 			}
 			catch(Exception ex) {
 				log.error("Could not write result: " + ex.getMessage());
 				ex.printStackTrace();
-			}
-			ret = queue.poll();
+			}			
 		}
 	}
 
