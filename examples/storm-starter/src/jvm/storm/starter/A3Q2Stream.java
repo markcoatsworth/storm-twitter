@@ -46,16 +46,19 @@ public class A3Q2Stream {
         String[] arguments = args.clone();
         String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
         
-        String[] hashTags = new String[]{ "#Mets", "#Royals", "#WorldSeries" };
+        String[] hashTags = new String[]{ "#Mets", "#Royals", "#WorldSeries" };//, "#TakeTheCrown", "#NYMets", "#KCRoyals", "#KCvsNYM", "#NYMvsKC" };
+        String[] continents = new String[]{ "North America" };
         
         // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
+        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, hashTags));
         builder.setSpout("hashtags", new HashtagSpout(hashTags));
+        builder.setSpout("continents", new ContinentSpout(continents));
         
         builder.setBolt("print", new A3Q2Bolt())
         	.shuffleGrouping("twitter")
-        	.shuffleGrouping("hashtags");
+        	.shuffleGrouping("hashtags")
+        	.shuffleGrouping("continents");
                 
         // Send the topology to the compute cluster        
         Config conf = new Config();

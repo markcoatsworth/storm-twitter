@@ -48,6 +48,7 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class TwitterSampleSpout extends BaseRichSpout {
 
+	double[][] wholeWorldBoundingBox = { {-180, -90}, {180, 90} };
 	int TweetsCollected;
 	LinkedBlockingQueue<Status> queue = null;
 	SpoutOutputCollector _collector;
@@ -67,6 +68,14 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		this.accessTokenSecret = accessTokenSecret;
 		this.keyWords = keyWords;
 		this.TweetsCollected = 0;
+		
+		// Show a list of keywords to make sure I'm not going insane
+		String keyWordsList = "";
+		for(int i = 0; i < keyWords.length; i ++) {
+			keyWordsList += keyWords[i] + " ";
+		}
+		log.info("Initializing TwitterSampleSpout with keywords: " + keyWordsList);
+		log.info("Keywords length=" + keyWords.length);
 		
 	}
 
@@ -120,6 +129,12 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		twitterStream.setOAuthAccessToken(token);
 		_twitterStream = twitterStream;
 		
+		// Show a list of keywords to make sure I'm not going insane
+		String keyWordsList = "";
+		for(int i = 0; i < this.keyWords.length; i ++) {
+			keyWordsList += this.keyWords[i] + " ";
+		}
+		log.info("Checking for keywords: " + keyWordsList);
 		
 		if (keyWords.length == 0) {
 
@@ -131,10 +146,9 @@ public class TwitterSampleSpout extends BaseRichSpout {
 			FilterQuery query = new FilterQuery();
 			query.track(keyWords);
 			query.language(new String[]{"en"});
+			query.locations(wholeWorldBoundingBox);
 			
-			twitterStream.filter(query);
-			
-			
+			twitterStream.filter(query);	
 		}
 
 	}

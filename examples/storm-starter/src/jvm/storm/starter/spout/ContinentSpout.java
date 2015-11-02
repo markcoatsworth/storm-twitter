@@ -47,22 +47,21 @@ import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
 @SuppressWarnings("serial")
-public class HashtagSpout extends BaseRichSpout {
+public class ContinentSpout extends BaseRichSpout {
 
 	int hashTagsPerInterval = 3;
 	int intervalLengthSecs = 3;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
-	String[] hashTags;
-	TwitterStream _twitterStream;
+	String[] continents;
 	
-	protected static Logger log = LoggerFactory.getLogger("HashtagSpout");
+	protected static Logger log = LoggerFactory.getLogger("ContinentSpout");
 
-	public HashtagSpout(String[] hashTags) {
-		this.hashTags = hashTags;
+	public ContinentSpout(String[] continents) {
+		this.continents = continents;
 	}
 
-	public HashtagSpout() {
+	public ContinentSpout() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -77,39 +76,20 @@ public class HashtagSpout extends BaseRichSpout {
 		// Every time interval, send a random hashtag to the bolt. 
 		while(true) {
 			
-			int randIndex = randomGenerator.nextInt(hashTags.length);
-			queue.offer(hashTags[randIndex]);
+			int randIndex = randomGenerator.nextInt(continents.length);
+			queue.offer(continents[randIndex]);
 			
 			// Send to the collector
 			_collector.emit(new Values(queue.poll()));
 			
 			// Wait...
-			Utils.sleep((intervalLengthSecs / hashTagsPerInterval) * 1000);
+			Utils.sleep(intervalLengthSecs * 1000);
 		}		
 	}
 
 	@Override
 	public void nextTuple() {
-		
-		log.info("nextTuple called!");
-		
-		/*Utils.sleep(5000);
-		
-		String hashtag = queue.poll();
-		if (hashtag == null) {
-			Utils.sleep(1000);
-		} 
-		else {
-			try {
-				log.info("Got something! Emitting to collector...");
-				_collector.emit(new Values(hashtag));
-			}
-			catch(Exception ex) {
-				log.error("Could not write result: " + ex.getMessage());
-				ex.printStackTrace();
-			}			
-		}
-		*/
+
 	}
 
 	@Override
