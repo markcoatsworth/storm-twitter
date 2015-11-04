@@ -49,8 +49,8 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class ContinentSpout extends BaseRichSpout {
 
-	int hashTagsPerInterval = 3;
-	int intervalLengthSecs = 3;
+	int hashTagsPerInterval = 1;
+	int intervalLengthSecs = 60;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
 	String[] continents;

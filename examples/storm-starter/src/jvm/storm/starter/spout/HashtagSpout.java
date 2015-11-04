@@ -50,7 +50,7 @@ import backtype.storm.utils.Utils;
 public class HashtagSpout extends BaseRichSpout {
 
 	int hashTagsPerInterval = 3;
-	int intervalLengthSecs = 3;
+	int intervalLengthSecs = 60;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
 	String[] hashTags;

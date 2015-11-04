@@ -46,9 +46,8 @@ import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
 @SuppressWarnings("serial")
-public class TwitterSampleSpout extends BaseRichSpout {
+public class TwitterRandomEnglishSpout extends BaseRichSpout {
 
-	double[][] wholeWorldBoundingBox = { {-180, -90}, {180, 90} };
 	int TweetsCollected;
 	LinkedBlockingQueue<Status> queue = null;
 	SpoutOutputCollector _collector;
@@ -56,30 +55,19 @@ public class TwitterSampleSpout extends BaseRichSpout {
 	String consumerSecret;
 	String accessToken;
 	String accessTokenSecret;
-	String[] keyWords;
 	TwitterStream _twitterStream;
 	
 	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
 
-	public TwitterSampleSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
+	public TwitterRandomEnglishSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
 		this.accessToken = accessToken;
 		this.accessTokenSecret = accessTokenSecret;
-		this.keyWords = keyWords;
 		this.TweetsCollected = 0;
-		
-		// Show a list of keywords to make sure I'm not going insane
-		String keyWordsList = "";
-		for(int i = 0; i < keyWords.length; i ++) {
-			keyWordsList += keyWords[i] + " ";
-		}
-		log.info("Initializing TwitterSampleSpout with keywords: " + keyWordsList);
-		log.info("Keywords length=" + keyWords.length);
-		
 	}
 
-	public TwitterSampleSpout() {
+	public TwitterRandomEnglishSpout() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -129,15 +117,13 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		twitterStream.setOAuthAccessToken(token);
 		_twitterStream = twitterStream;
 		
-		// Show a list of keywords to make sure I'm not going insane
-		String keyWordsList = "";
-		for(int i = 0; i < this.keyWords.length; i ++) {
-			keyWordsList += this.keyWords[i] + " ";
-		}
-		log.info("Checking for keywords: " + keyWordsList);
+		FilterQuery query = new FilterQuery();
+		//query.track(new String[] {"#politics"});
+		//query.language(new String[]{"en"});
+		twitterStream.sample();
 		
+		/*
 		if (keyWords.length == 0) {
-
 			twitterStream.sample();
 		}
 
@@ -150,12 +136,12 @@ public class TwitterSampleSpout extends BaseRichSpout {
 			
 			twitterStream.filter(query);	
 		}
+		*/
 
 	}
 
 	@Override
 	public void nextTuple() {
-		//log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
 		Utils.sleep(50);
 		
 		Status ret = queue.poll();
@@ -163,7 +149,6 @@ public class TwitterSampleSpout extends BaseRichSpout {
 		while(ret != null) {
 			try {
 				_collector.emit(new Values(ret));
-				//log.info("Got new tweet (" + ret.getText() + ")! collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
 				this.TweetsCollected++;	
 			}
 			catch(Exception ex) {

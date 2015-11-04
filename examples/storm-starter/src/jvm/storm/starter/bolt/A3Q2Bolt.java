@@ -22,7 +22,7 @@ import backtype.storm.utils.Utils;
 public class A3Q2Bolt extends BaseBasicBolt {
 
 	protected int intervalCount = 1;
-	protected int intervalTimeSecs = 3;
+	protected int intervalTimeSecs = 60;
 	protected int numTimedIntervals = 200;
 	protected long intervalStartTime;
 	protected static Logger log = LoggerFactory.getLogger("A3Bolt");
@@ -167,9 +167,8 @@ public class A3Q2Bolt extends BaseBasicBolt {
 
 		// First, compile a huge dictionary of word counts
 		for(Status thisTweet : tweets) {
-			String thisTweetText = thisTweet.getText().replaceAll("(\\r|\\n)", "");
-			thisTweetText = thisTweet.getText().replaceAll(".", " ").replaceAll(",", " ").replaceAll("?", " ").replaceAll("!", " ");
-			log.info("thisTweetText=" + thisTweetText);
+			String thisTweetText = thisTweet.getText().replaceAll("(\\r|\\n)", "").replace('.', ' ').replace(',', ' ').replace('!', ' ').replace('?', ' ');
+			//log.info("thisTweetText=" + thisTweetText);
 			String[] tweetWords = thisTweetText.split(" ");
 			for(String thisWord : tweetWords) {
 				if(!wordCounts.containsKey(thisWord)) {
@@ -187,12 +186,14 @@ public class A3Q2Bolt extends BaseBasicBolt {
 				wordCounts.remove(thisStopWord);
 			}
 		}
+		wordCounts.remove("");
 		
 		// Now sort the list by word count
 		Map<String, Integer> sortedWordCounts = sortByComparator(wordCounts, false);
 		
 		// Finally, output the top 50% of words in the list to a file
 		int numOutputWords = sortedWordCounts.size() / 2;
+		log.info("Outputting words, " + sortedWordCounts.size() + " total results, outputting " + numOutputWords);
 		
 		BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter(filePath, true));
 		ResultsFileWriter.append("{ TopWordsArray: [\n");

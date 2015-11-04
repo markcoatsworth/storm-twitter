@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 import storm.starter.bolt.*;
 import storm.starter.spout.*;
 
-public class A3Q2Stream {    
+public class A3Q1NoKeywordsStream {    
 	
-	protected static Logger log = LoggerFactory.getLogger("TwitterHashtagContinentStream");
+	protected static Logger log = LoggerFactory.getLogger("A3Q1NoKeywordsStream");
 	
     public static void main(String[] args) {
         String consumerKey = args[0]; 
@@ -44,21 +44,13 @@ public class A3Q2Stream {
         String accessToken = args[2]; 
         String accessTokenSecret = args[3];
         String[] arguments = args.clone();
-        String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
-        
-        String[] hashTags = new String[]{ "#Mets", "#Royals", "#WorldSeries" };//, "#TakeTheCrown", "#NYMets", "#KCRoyals", "#KCvsNYM", "#NYMvsKC" };
-        //String[] continents = new String[]{ "North America" };
         
         // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitter", new TwitterSampleSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, hashTags));
-        builder.setSpout("hashtags", new HashtagSpout(hashTags));
-        //builder.setSpout("continents", new ContinentSpout(continents));
+        builder.setSpout("twitter", new TwitterRandomEnglishSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret));
         
-        builder.setBolt("print", new A3Q2Bolt())
-        	.shuffleGrouping("twitter")
-        	.shuffleGrouping("hashtags");
-        	//.shuffleGrouping("continents");
+        builder.setBolt("print", new FileOutputBolt())
+        	.shuffleGrouping("twitter");
                 
         // Send the topology to the compute cluster        
         Config conf = new Config();
@@ -68,7 +60,7 @@ public class A3Q2Stream {
         
         try {
         	// Sleep for a long time
-	        Utils.sleep(3600000);
+	        Utils.sleep(7200000);
 	        
 	        // Now shut it down!
 	        cluster.shutdown();
