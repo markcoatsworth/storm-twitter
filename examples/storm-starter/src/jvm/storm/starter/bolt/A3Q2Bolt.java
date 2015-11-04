@@ -25,13 +25,13 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	protected int intervalTimeSecs = 60;
 	protected int numTimedIntervals = 200;
 	protected long intervalStartTime;
-	protected static Logger log = LoggerFactory.getLogger("A3Bolt");
-	protected ArrayList<String> continents;
+	protected static Logger log = LoggerFactory.getLogger("A3Q2Bolt");
+	protected ArrayList<Integer> randomNumbers;
 	protected ArrayList<String> hashTags;
 	protected ArrayList<Status> tweets;
 	
 	public A3Q2Bolt() {
-		continents = new ArrayList<String>();
+		randomNumbers = new ArrayList<Integer>();
 		hashTags = new ArrayList<String>();
 		tweets = new ArrayList<Status>();
 		intervalStartTime = System.currentTimeMillis();
@@ -39,21 +39,11 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	
 	@Override
 	public void execute(Tuple input, BasicOutputCollector collector) {
-		//log.info("Called execute! input.getSourceComponent()=" + input.getSourceComponent());
 		
 		// When we receive a tweet, add it to in-memory list
 		if(input.getSourceComponent().equals("twitter")) {
 			for(Object inputValue : input.getValues()) {
 				Status thisTweet = (Status) inputValue;
-				/*
-				log.info("Tweet text: " + thisTweet.getText().replaceAll("(\\r|\\n)", ""));
-				if(thisTweet.getPlace() != null) {
-					if(thisTweet.getPlace().getCountryCode() != null) {
-						log.info("Tweet location: " + thisTweet.getPlace().getCountryCode().toString());
-						
-					}
-				}
-				*/
 				tweets.add(thisTweet);
 			}
 		}
@@ -62,29 +52,27 @@ public class A3Q2Bolt extends BaseBasicBolt {
 			for(Object inputValue : input.getValues()) {
 				String thisHashtag = inputValue.toString();
 				if(!hashTags.contains(thisHashtag)) {
-					//log.info("Adding hashtag " + thisHashtag + " to in-memory list");
 					hashTags.add(thisHashtag);
 				}
 			}
 		}
 		// When we receive a continent, add it to the in-memory list (if it doesn't exist there already)
-		else if(input.getSourceComponent().equals("continents")) {
+		else if(input.getSourceComponent().equals("randomNumbers")) {
 			for(Object inputValue : input.getValues()) {
-				String thisContinent = inputValue.toString();
-				if(!continents.contains(thisContinent)) {
-					log.info("Adding continent " + thisContinent + " to in-memory list");
-					continents.add(thisContinent);
+				int thisNumber = (Integer)inputValue;
+				if(!randomNumbers.contains(thisNumber)) {
+					randomNumbers.add(thisNumber);
 				}
 			}
 		}
 		
-		// If we have exceeded the interval time, process the data currently being stored
+		// Once we exceed the interval time, process the data currently being stored
 		if(System.currentTimeMillis() > (intervalStartTime + (1000 * intervalTimeSecs))) {
 		
 			log.info("End of time interval! tweets=" + tweets.size() + ", hashtags=" + hashTags.size() + ", continents=" + continents.size());
 			
 			ArrayList<Status> matchingTweets;
-			matchingTweets = getMatchingTweets(tweets, hashTags, continents);
+			matchingTweets = getMatchingTweets(tweets, hashTags, randomNumbers);
 			
 			// Output the full list of matching tweets to file
 			try {
@@ -210,6 +198,7 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	}
 	
 	/*
+	 * Sorts a HashMap
 	 * Stolen from: http://stackoverflow.com/questions/8119366/sorting-hashmap-by-values
 	 */
 	public LinkedHashMap sortHashMapByValuesD(HashMap passedMap) {

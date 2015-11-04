@@ -58,7 +58,7 @@ public class TwitterKeywordsSpout extends BaseRichSpout {
 	String[] keyWords;
 	TwitterStream _twitterStream;
 	
-	protected static Logger log = LoggerFactory.getLogger("TwitterSampleSpout");
+	protected static Logger log = LoggerFactory.getLogger("TwitterKeywordsSpout");
 
 	public TwitterKeywordsSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret, String[] keyWords) {
 		this.consumerKey = consumerKey;
@@ -142,27 +142,19 @@ public class TwitterKeywordsSpout extends BaseRichSpout {
 
 	@Override
 	public void nextTuple() {
-		//log.info("nextTuple() called, tweets collected=" + this.TweetsCollected + ", queue.size=" + queue.size());
-		
-		// Start by waiting for 10 seconds and letting the listener pick up some tweets
-		Utils.sleep(10000);
 		Status ret = queue.poll();
 		
 		// If we have no tweets (which is very unlikely) then wait another 10 seconds
 		if (ret == null) {
-			Utils.sleep(10000);
+			Utils.sleep(50);
 		} 
 		// Otherwise send them all to the collector
 		else {
 			try {
-				while(!queue.isEmpty()) {
-					_collector.emit(new Values(ret));
-					log.info("Got new tweet! Collected=" + this.TweetsCollected);
-					this.TweetsCollected++;
-				}
+				_collector.emit(new Values(ret));
 			}
 			catch(Exception ex) {
-				log.error("Could not write result: " + ex.getMessage());
+				log.error("Error collecting tweets: " + ex.getMessage());
 				ex.printStackTrace();
 			}			
 		}

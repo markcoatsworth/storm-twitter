@@ -50,7 +50,7 @@ import backtype.storm.utils.Utils;
 public class HashtagSpout extends BaseRichSpout {
 
 	int hashTagsPerInterval = 3;
-	int intervalLengthSecs = 60;
+	int intervalLengthSecs = 3;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
 	String[] hashTags;
@@ -90,26 +90,7 @@ public class HashtagSpout extends BaseRichSpout {
 
 	@Override
 	public void nextTuple() {
-		
-		log.info("nextTuple called!");
-		
-		/*Utils.sleep(5000);
-		
-		String hashtag = queue.poll();
-		if (hashtag == null) {
-			Utils.sleep(1000);
-		} 
-		else {
-			try {
-				log.info("Got something! Emitting to collector...");
-				_collector.emit(new Values(hashtag));
-			}
-			catch(Exception ex) {
-				log.error("Could not write result: " + ex.getMessage());
-				ex.printStackTrace();
-			}			
-		}
-		*/
+		// Not used here
 	}
 
 	@Override

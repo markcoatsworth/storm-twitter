@@ -47,21 +47,20 @@ import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
 @SuppressWarnings("serial")
-public class ContinentSpout extends BaseRichSpout {
+public class RandomNumberSpout extends BaseRichSpout {
 
-	int hashTagsPerInterval = 1;
-	int intervalLengthSecs = 60;
+	int intervalLengthSecs = 3;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
-	String[] continents;
+	int[] randomNumbers;
 	
-	protected static Logger log = LoggerFactory.getLogger("ContinentSpout");
+	protected static Logger log = LoggerFactory.getLogger("RandomNumberSpout");
 
-	public ContinentSpout(String[] continents) {
-		this.continents = continents;
+	public RandomNumberSpout(int[] nums) {
+		this.randomNumbers = nums;
 	}
 
-	public ContinentSpout() {
+	public RandomNumberSpout() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -76,8 +75,8 @@ public class ContinentSpout extends BaseRichSpout {
 		// Every time interval, send a random hashtag to the bolt. 
 		while(true) {
 			
-			int randIndex = randomGenerator.nextInt(continents.length);
-			queue.offer(continents[randIndex]);
+			int randIndex = randomGenerator.nextInt(randomNumbers.length);
+			queue.offer(randomNumbers[randIndex]);
 			
 			// Send to the collector
 			_collector.emit(new Values(queue.poll()));

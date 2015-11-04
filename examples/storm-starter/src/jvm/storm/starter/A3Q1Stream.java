@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 import storm.starter.bolt.*;
 import storm.starter.spout.*;
 
-public class A3Q2Stream {    
+public class A3Q1Stream {    
 	
-	protected static Logger log = LoggerFactory.getLogger("TwitterHashtagContinentStream");
+	protected static Logger log = LoggerFactory.getLogger("A3Q1NoKeywordsStream");
 	
     public static void main(String[] args) {
         String consumerKey = args[0]; 
@@ -46,19 +46,12 @@ public class A3Q2Stream {
         String[] arguments = args.clone();
         String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
         
-        String[] hashTags = new String[]{ "#cdnpoli", "#NationalStressAwarenessDay", "#YouHadMeAt", "#MorganFreeman" };
-        int[] randomNumbers = new int[]{ 1, 5, 10, 50, 100, 500, 1000 };
-        
         // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitter", new TwitterKeywordsSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, hashTags));
-        builder.setSpout("hashtags", new HashtagSpout(hashTags));
-        builder.setSpout("randomNumbers", new RandomNumberSpout(randomNumbers));
+        builder.setSpout("twitter", new TwitterKeywordsSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
         
-        builder.setBolt("print", new A3Q2Bolt())
-        	.shuffleGrouping("twitter")
-        	.shuffleGrouping("hashtags")
-        	.shuffleGrouping("randomNumbers");
+        builder.setBolt("fileoutput", new FileOutputBolt())
+        	.shuffleGrouping("twitter");
                 
         // Send the topology to the compute cluster        
         Config conf = new Config();
