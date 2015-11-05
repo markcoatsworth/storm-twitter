@@ -31,7 +31,7 @@ import backtype.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import storm.starter.bolt.PrinterBolt;
+import storm.starter.bolt.*;
 import storm.starter.spout.*;
 
 public class PrintSampleStream {    
@@ -48,8 +48,8 @@ public class PrintSampleStream {
         
         // Set up + configure the topology (job)
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitter", new TwitterKeywordsFileOutputSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
-        builder.setBolt("print", new PrinterBolt()).shuffleGrouping("twitter");
+        builder.setSpout("twitter", new TwitterKeywordsSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, keyWords));
+        //builder.setBolt("print", new PrinterBolt()).shuffleGrouping("twitter");
                 
         // Send the topology to the compute cluster        
         Config conf = new Config();

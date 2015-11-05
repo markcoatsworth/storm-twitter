@@ -44,9 +44,8 @@ public class A3Q2Stream {
         String accessToken = args[2]; 
         String accessTokenSecret = args[3];
         String[] arguments = args.clone();
-        String[] keyWords = Arrays.copyOfRange(arguments, 4, arguments.length);
+        String[] hashTags = Arrays.copyOfRange(arguments, 4, arguments.length);
         
-        String[] hashTags = new String[]{ "#cdnpoli", "#NationalStressAwarenessDay", "#YouHadMeAt", "#MorganFreeman" };
         int[] randomNumbers = new int[]{ 1, 5, 10, 50, 100, 500, 1000 };
         
         // Set up + configure the topology (job)

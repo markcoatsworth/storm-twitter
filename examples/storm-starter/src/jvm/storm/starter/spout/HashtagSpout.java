@@ -49,8 +49,8 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class HashtagSpout extends BaseRichSpout {
 
-	int hashTagsPerInterval = 3;
-	int intervalLengthSecs = 3;
+	int hashTagsPerInterval = 9;
+	int intervalLengthSecs = 30;
 	LinkedBlockingQueue<String> queue = null;
 	SpoutOutputCollector _collector;
 	String[] hashTags;
@@ -60,6 +60,7 @@ public class HashtagSpout extends BaseRichSpout {
 
 	public HashtagSpout(String[] hashTags) {
 		this.hashTags = hashTags;
+		log.info("Initialized HashtagSpout, hashTags.length=" + hashTags.length);
 	}
 
 	public HashtagSpout() {
@@ -78,6 +79,7 @@ public class HashtagSpout extends BaseRichSpout {
 		while(true) {
 			
 			int randIndex = randomGenerator.nextInt(hashTags.length);
+			log.debug("hashTags.length=" + hashTags.length + ", randIndex=" + randIndex);
 			queue.offer(hashTags[randIndex]);
 			
 			// Send to the collector

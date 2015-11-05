@@ -22,7 +22,7 @@ import backtype.storm.utils.Utils;
 public class A3Q2Bolt extends BaseBasicBolt {
 
 	protected int intervalCount = 1;
-	protected int intervalTimeSecs = 60;
+	protected int intervalTimeSecs = 30;
 	protected int numTimedIntervals = 200;
 	protected long intervalStartTime;
 	protected static Logger log = LoggerFactory.getLogger("A3Q2Bolt");
@@ -69,7 +69,7 @@ public class A3Q2Bolt extends BaseBasicBolt {
 		// Once we exceed the interval time, process the data currently being stored
 		if(System.currentTimeMillis() > (intervalStartTime + (1000 * intervalTimeSecs))) {
 		
-			log.info("End of time interval! tweets=" + tweets.size() + ", hashtags=" + hashTags.size() + ", continents=" + continents.size());
+			log.info("End of time interval! tweets=" + tweets.size() + ", hashtags=" + hashTags.size() + ", randomNumbers=" + randomNumbers.size());
 			
 			ArrayList<Status> matchingTweets;
 			matchingTweets = getMatchingTweets(tweets, hashTags, randomNumbers);
@@ -95,7 +95,7 @@ public class A3Q2Bolt extends BaseBasicBolt {
 			// Reset the data collection lists & interval start time
 			tweets.clear();
 			hashTags.clear();
-			continents.clear();
+			randomNumbers.clear();
 			intervalStartTime = System.currentTimeMillis();
 		}
 	}
@@ -103,7 +103,7 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	/*
 	 * Returns a list of tweets from sourceTweets that match the criteria in matchHashTags and matchContinents
 	 */
-	public ArrayList<Status> getMatchingTweets(ArrayList<Status> sourceTweets, ArrayList<String> matchHashTags, ArrayList<String> matchContinents) {
+	public ArrayList<Status> getMatchingTweets(ArrayList<Status> sourceTweets, ArrayList<String> matchHashTags, ArrayList<Integer> matchRandomNumbers) {
 		
 		ArrayList<Status> matchingTweets = new ArrayList<Status>();
 		boolean isMatching;
@@ -118,6 +118,16 @@ public class A3Q2Bolt extends BaseBasicBolt {
 					isMatching = true;
 				}
 			}
+			// Now check against the current random number. Tweeter must have more followers than this number.
+			if(randomNumbers.size() > 0) {
+				if(thisTweet.getUser().getFollowersCount() > randomNumbers.get(0)) {
+					isMatching = true;
+				}
+			}
+			else {
+				log.error("No random numbers in memory!");
+			}
+			
 			
 			// If this tweet passes matching criteria, add it to the match list
 			if(isMatching) {
@@ -152,11 +162,21 @@ public class A3Q2Bolt extends BaseBasicBolt {
 		
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
 		String[] stopWords = new String[]{ "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves" };
-
+		String thisTweetText;
+		
 		// First, compile a huge dictionary of word counts
 		for(Status thisTweet : tweets) {
-			String thisTweetText = thisTweet.getText().replaceAll("(\\r|\\n)", "").replace('.', ' ').replace(',', ' ').replace('!', ' ').replace('?', ' ');
-			//log.info("thisTweetText=" + thisTweetText);
+			// For retweets, use the original tweet text.
+			if(thisTweet.isRetweet()) {
+				thisTweetText = thisTweet.getRetweetedStatus().getText();
+			}
+			else {
+				thisTweetText = thisTweet.getText();
+			}
+			
+			// Strip out spaces, newlines, punctuation, and stop words
+			thisTweetText = thisTweet.getText().replaceAll("(\\r|\\n|)", "").replace(',', ' ');
+			log.info("thisTweetText=" + thisTweetText);
 			String[] tweetWords = thisTweetText.split(" ");
 			for(String thisWord : tweetWords) {
 				if(!wordCounts.containsKey(thisWord)) {
@@ -179,60 +199,43 @@ public class A3Q2Bolt extends BaseBasicBolt {
 		// Now sort the list by word count
 		Map<String, Integer> sortedWordCounts = sortByComparator(wordCounts, false);
 		
-		// Finally, output the top 50% of words in the list to a file
-		int numOutputWords = sortedWordCounts.size() / 2;
-		log.info("Outputting words, " + sortedWordCounts.size() + " total results, outputting " + numOutputWords);
-		
-		BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter(filePath, true));
-		ResultsFileWriter.append("{ TopWordsArray: [\n");
+		// Count the number of non-stop words.
+		int nonStopWordCount = 0;
 		Iterator it = sortedWordCounts.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			nonStopWordCount += (Integer)pair.getValue();
+		}
+		
+		// Output two files that show the top 50% of words in the list:
+		// 	1) A JSON structure matching words to frequency counts
+		//	2) A CSV structure that just shows the raw words
+		BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter(filePath, true));
+		BufferedWriter TopWordsCSVFileWriter = new BufferedWriter(new FileWriter("q2-output/all-intervals-topwords.csv", true));
+		
+		int numOutputWords = nonStopWordCount / 2;
+		it = sortedWordCounts.entrySet().iterator();
+		
+		ResultsFileWriter.append("{ TopWordsArray: [\n");
 		while (it.hasNext() && numOutputWords > 0) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        ResultsFileWriter.append("\t{ word: \"" + pair.getKey() + "\", count: " + pair.getValue() + " }\n");
+	        ResultsFileWriter.append("\t{ word: \"" + pair.getKey() + "\", count: " + pair.getValue() + " },\n");
+	        TopWordsCSVFileWriter.append(pair.getKey() + ",");
 	        //System.out.println(pair.getKey() + " = " + pair.getValue());
 	        it.remove(); // avoids a ConcurrentModificationException
-	        numOutputWords--;
+	        numOutputWords -= (Integer)pair.getValue();
 	    }
 		ResultsFileWriter.append("] }");
+		TopWordsCSVFileWriter.append("\n");
+		
 		ResultsFileWriter.close();
+		TopWordsCSVFileWriter.close();
 	}
 	
-	/*
-	 * Sorts a HashMap
-	 * Stolen from: http://stackoverflow.com/questions/8119366/sorting-hashmap-by-values
-	 */
-	public LinkedHashMap sortHashMapByValuesD(HashMap passedMap) {
-	   List mapKeys = new ArrayList(passedMap.keySet());
-	   List mapValues = new ArrayList(passedMap.values());
-	   Collections.sort(mapValues);
-	   Collections.sort(mapKeys);
-
-	   LinkedHashMap sortedMap = new LinkedHashMap();
-
-	   Iterator valueIt = mapValues.iterator();
-	   while (valueIt.hasNext()) {
-	       Object val = valueIt.next();
-	       Iterator keyIt = mapKeys.iterator();
-
-	       while (keyIt.hasNext()) {
-	           Object key = keyIt.next();
-	           String comp1 = passedMap.get(key).toString();
-	           String comp2 = val.toString();
-
-	           if (comp1.equals(comp2)){
-	               passedMap.remove(key);
-	               mapKeys.remove(key);
-	               sortedMap.put((String)key, (Double)val);
-	               break;
-	           }
-
-	       }
-
-	   }
-	   return sortedMap;
-	}
+	
 	
 	/*
+	 * Sorts a Map structure.
 	 * Stolen from: http://stackoverflow.com/questions/8119366/sorting-hashmap-by-values
 	 */
 	private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order)
@@ -274,18 +277,3 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	}
 
 }
-
-/*
-Fields inputFields = input.getFields(); // input.getFields();
-for(int i = 0; i < inputFields.size(); i ++) {
-	if(inputFields.get(i).toString().equals("tweet")) {
-		//log.info("Tweet! field.toString()=" + input.getFields().get(0).toString());
-	}
-	//log.info("input.fields[" + i + "]=" + inputFields.get(i).toString() );
-}
-*/
-//log.info("input.getValue()=" + input.getValue());
-//log.info("input=" + input.toString());
-
-//log.info("collector=" + collector.
-//log.info("input.getSourceComponent()=" + input.getSourceComponent());

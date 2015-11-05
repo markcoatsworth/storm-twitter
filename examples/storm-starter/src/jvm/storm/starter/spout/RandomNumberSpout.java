@@ -49,8 +49,8 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class RandomNumberSpout extends BaseRichSpout {
 
-	int intervalLengthSecs = 3;
-	LinkedBlockingQueue<String> queue = null;
+	int intervalLengthSecs = 25;
+	LinkedBlockingQueue<Integer> queue = null;
 	SpoutOutputCollector _collector;
 	int[] randomNumbers;
 	
@@ -69,7 +69,7 @@ public class RandomNumberSpout extends BaseRichSpout {
 		log.info("Called open...");
 		
 		Random randomGenerator = new Random();
-		queue = new LinkedBlockingQueue<String>(1000);
+		queue = new LinkedBlockingQueue<Integer>(1000);
 		_collector = collector;
 		
 		// Every time interval, send a random hashtag to the bolt. 
