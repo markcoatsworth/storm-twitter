@@ -49,7 +49,7 @@ import backtype.storm.utils.Utils;
 @SuppressWarnings("serial")
 public class RandomNumberSpout extends BaseRichSpout {
 
-	int intervalLengthSecs = 25;
+	int intervalLengthSecs = 30;
 	LinkedBlockingQueue<Integer> queue = null;
 	SpoutOutputCollector _collector;
 	int[] randomNumbers;

@@ -83,7 +83,6 @@ public class TwitterKeywordsSpout extends BaseRichSpout {
 
 			@Override
 			public void onStatus(Status status) {
-				log.info("Adding new tweet to queue");
 				queue.offer(status);
 			}
 
