@@ -41,13 +41,17 @@ public class FileOutputBolt extends BaseBasicBolt {
 	  try {
 		  Status thisTweet = (Status) input.getValues().get(0);
 		  
-		  if(!thisTweet.getLang().equals("en")) {
-			  return;
+		  // For retweets, record the original status text.
+		  if(thisTweet.isRetweet()) {
+			  String tweetText = thisTweet..getRetweetedStatus().getText().replaceAll("(\\r|\\n)", "");
+		  }
+		  e[se {
+			  String tweetText = thisTweet.getText().replaceAll("(\\r|\\n)", "");
 		  }
 		  
+		  
 		  BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter("q1-random-english-tweets.txt", true));
-		  String tweetText = thisTweet.getText().replaceAll("(\\r|\\n)", "");
-		  log.info("Lang (" + thisTweet.getLang() + "): " + tweetText);
+		  log.info("Saving tweet: " + tweetText);
 		  ResultsFileWriter.append(tweetText + "\n");
 		  ResultsFileWriter.close();
 	  }

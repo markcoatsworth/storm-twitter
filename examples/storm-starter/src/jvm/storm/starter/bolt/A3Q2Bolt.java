@@ -200,22 +200,14 @@ public class A3Q2Bolt extends BaseBasicBolt {
 		// Now sort the list by word count
 		Map<String, Integer> sortedWordCounts = sortByComparator(wordCounts, false);
 		
-		// Count the number of non-stop words.
-		int nonStopWordCount = 0;
-		Iterator it = sortedWordCounts.entrySet().iterator();
-		while(it.hasNext()) {
-			Map.Entry pair = (Map.Entry)it.next();
-			nonStopWordCount += (Integer)pair.getValue();
-		}
-		
 		// Output two files that show the top 50% of words in the list:
 		// 	1) A JSON structure matching words to frequency counts
 		//	2) A CSV structure that just shows the raw words
 		BufferedWriter ResultsFileWriter = new BufferedWriter(new FileWriter(filePath, true));
 		BufferedWriter TopWordsCSVFileWriter = new BufferedWriter(new FileWriter("q2-output/all-intervals-topwords.csv", true));
 		
-		int numOutputWords = nonStopWordCount / 2;
-		it = sortedWordCounts.entrySet().iterator();
+		int numOutputWords = sortedWordCounts.size() / 2;
+		Iterator it = sortedWordCounts.entrySet().iterator();
 		
 		ResultsFileWriter.append("{ TopWordsArray: [\n");
 		while (it.hasNext() && numOutputWords > 0) {
@@ -223,7 +215,7 @@ public class A3Q2Bolt extends BaseBasicBolt {
 	        ResultsFileWriter.append("\t{ word: \"" + pair.getKey() + "\", count: " + pair.getValue() + " },\n");
 	        TopWordsCSVFileWriter.append(pair.getKey() + ",");
 	        it.remove(); // avoids a ConcurrentModificationException
-	        numOutputWords -= (Integer)pair.getValue();
+	        numOutputWords --;
 	    }
 		ResultsFileWriter.append("] }");
 		TopWordsCSVFileWriter.append("\n");
